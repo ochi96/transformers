@@ -88,7 +88,7 @@ def Encoder(self, num_layers, d_model, num_heads, dff, row_size,col_size, x, tra
     
     embedding = tf.keras.layers.Dense(d_model,activation='relu')
     pos_encoding = positional_encoding_2d(row_size,col_size,d_model)
-    enc_layers = EncoderLayer(d_model, num_heads, dff, rate) for _ in range(num_layers)]
+    enc_layers = [EncoderLayer(d_model, num_heads, dff, rate) for _ in range(num_layers)]
 
     dropout = tf.keras.layers.Dropout(rate)
 
