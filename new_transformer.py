@@ -1,7 +1,5 @@
 import tensorflow as tf
 import numpy as np
-from keras.layers import Layer
-from keras import layer
 
 
 def get_angles(pos, i, d_model):
@@ -103,7 +101,7 @@ def Encoder(self, num_layers, d_model, num_heads, dff, row_size,col_size, x, tra
     return x
 
 def Decoder(self, num_layers, d_model, num_heads, dff, target_vocab_size, maximum_position_encoding,
-    x, enc_output, training,rate = 0.1 look_ahead_mask=None, padding_mask=None,):
+    x, enc_output, training,rate = 0.1, look_ahead_mask=None, padding_mask=None,):
 
     embedding = tf.keras.layers.Embedding(target_vocab_size, d_model)
     pos_encoding = positional_encoding_1d(maximum_position_encoding, d_model)
@@ -129,7 +127,7 @@ def Decoder(self, num_layers, d_model, num_heads, dff, target_vocab_size, maximu
     return x, attention_weights
 
 
-def Transformer(self, layers, d_model, num_heads, dff,row_size,col_size, target_vocab_size,max_pos_encoding, 
+def transformer(layers, d_model, num_heads, dff,row_size,col_size, target_vocab_size,max_pos_encoding, 
     inp, tar, training,rate=0.1, look_ahead_mask=None, dec_padding_mask=None,enc_padding_mask=None):
 
     encoder = Encoder(layers, d_model, num_heads, dff,row_size,col_size, rate)
