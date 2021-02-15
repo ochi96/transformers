@@ -39,7 +39,7 @@ def point_wise_feed_forward_network(d_model, dff):
         tf.keras.layers.Dense(d_model)
     ])
 
-def EncoderLayer(d_model, num_heads, dff, rate=0.1, x, training, mask=None):
+def EncoderLayer(d_model, num_heads, dff, x, training,rate=0.1, mask=None):
 
     mha = tf.keras.layers.MultiHeadAttention(value_dim=d_model, key_dim=d_model, num_heads=num_heads, dropout=rate, output_shape=d_model)
     ffn = point_wise_feed_forward_network(d_model, dff)
@@ -58,7 +58,7 @@ def EncoderLayer(d_model, num_heads, dff, rate=0.1, x, training, mask=None):
 
     return out2
 
-def DecoderLayer(d_model, num_heads, dff, rate=0.1, x, enc_output, training, look_ahead_mask=None, padding_mask=None):
+def DecoderLayer(d_model, num_heads, dff, x, enc_output, training, rate=0.1, look_ahead_mask=None, padding_mask=None):
     mha1 = tf.keras.layers.MultiHeadAttention(value_dim=d_model, key_dim=d_model, num_heads=num_heads, dropout=rate, output_shape=d_model)
     mha2 = tf.keras.layers.MultiHeadAttention(value_dim=d_model, key_dim=d_model, num_heads=num_heads, dropout=rate, output_shape=d_model)
 
@@ -84,7 +84,7 @@ def DecoderLayer(d_model, num_heads, dff, rate=0.1, x, enc_output, training, loo
     return out3, attn_weights_block1, attn_weights_block2
 
 
-def Encoder(self, num_layers, d_model, num_heads, dff, row_size,col_size,rate=0.1, x, training, mask=None):
+def Encoder(self, num_layers, d_model, num_heads, dff, row_size,col_size, x, training,rate=0.1, mask=None):
     
     embedding = tf.keras.layers.Dense(d_model,activation='relu')
     pos_encoding = positional_encoding_2d(row_size,col_size,d_model)
@@ -102,8 +102,8 @@ def Encoder(self, num_layers, d_model, num_heads, dff, row_size,col_size,rate=0.
 
     return x
 
-def Decoder(self, num_layers, d_model, num_heads, dff, target_vocab_size, maximum_position_encoding, rate=0.1,
-    x, enc_output, training, look_ahead_mask=None, padding_mask=None):
+def Decoder(self, num_layers, d_model, num_heads, dff, target_vocab_size, maximum_position_encoding,
+    x, enc_output, training,rate = 0.1 look_ahead_mask=None, padding_mask=None,):
 
     embedding = tf.keras.layers.Embedding(target_vocab_size, d_model)
     pos_encoding = positional_encoding_1d(maximum_position_encoding, d_model)
@@ -129,8 +129,8 @@ def Decoder(self, num_layers, d_model, num_heads, dff, target_vocab_size, maximu
     return x, attention_weights
 
 
-def Transformer(self, layers, d_model, num_heads, dff,row_size,col_size, target_vocab_size,max_pos_encoding, rate=0.1, 
-    inp, tar, training,look_ahead_mask=None, dec_padding_mask=None,enc_padding_mask=None):
+def Transformer(self, layers, d_model, num_heads, dff,row_size,col_size, target_vocab_size,max_pos_encoding, 
+    inp, tar, training,rate=0.1, look_ahead_mask=None, dec_padding_mask=None,enc_padding_mask=None):
 
     encoder = Encoder(layers, d_model, num_heads, dff,row_size,col_size, rate)
     decoder = Decoder(layers, d_model, num_heads, dff, target_vocab_size,max_pos_encoding, rate)
